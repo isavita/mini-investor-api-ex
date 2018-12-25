@@ -42,9 +42,30 @@ defmodule MiniInvestorApi.InvestmentsTest do
     end
   end
 
-  defp fixture_campaign(attrs \\ @campaign_valid_attrs) do
+  describe "paginate_campaigns/2" do
+    setup do
+      {:ok, campaign1: fixture_campaign(), campaign2: fixture_campaign(%{"name" => "Company 2"})}
+    end
+
+    test "with `page` and `page_size` returns `page_size` number of campaigns", %{
+      campaign1: campaign1,
+      campaign2: campaign2
+    } do
+      assert %{entries: campaigns, page_number: 1, page_size: 1, total_entries: 2, total_pages: 2} =
+               Investments.paginate_campaigns(1, 1)
+
+      assert campaigns == [campaign1]
+
+      assert %{entries: campaigns, page_number: 2, page_size: 1, total_entries: 2, total_pages: 2} =
+               Investments.paginate_campaigns(2, 1)
+
+      assert campaigns == [campaign2]
+    end
+  end
+
+  defp fixture_campaign(attrs \\ %{}) do
     %Campaign{}
-    |> Campaign.changeset(attrs)
+    |> Campaign.changeset(Map.merge(@campaign_valid_attrs, attrs))
     |> Repo.insert!()
   end
 end

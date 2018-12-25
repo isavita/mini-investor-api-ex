@@ -38,4 +38,12 @@ defmodule MiniInvestorApi.Investments do
   def list_campaigns() do
     Repo.all(Campaign)
   end
+
+  @doc """
+  Returns `map` with list of `page_size` number of campaigns from given page `page`,
+  total number of campaings, and total number of pages.
+  """
+  def paginate_campaigns(page, page_size) do
+    Repo.paginate(Campaign, page: page, page_size: page_size)
+  end
 end

@@ -20,7 +20,7 @@ defmodule MiniInvestorApi.MixProject do
   def application do
     [
       mod: {MiniInvestorApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :scrivener_ecto]
     ]
   end
 
@@ -40,7 +40,8 @@ defmodule MiniInvestorApi.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 
