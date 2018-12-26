@@ -6,9 +6,9 @@ defmodule MiniInvestorApiWeb.CampaignView do
       data: %{
         campaigns: render_many(paginated_campaigns.entries, MiniInvestorApiWeb.CampaignView, "campaign.json"),
         page: paginated_campaigns.page_number,
-        page_size: paginated_campaigns.page_size,
-        total_pages: paginated_campaigns.total_pages,
-        total_entries: paginated_campaigns.total_entries
+        pageSize: paginated_campaigns.page_size,
+        totalPages: paginated_campaigns.total_pages,
+        totalEntries: paginated_campaigns.total_entries
       }
     }
   end
@@ -17,12 +17,17 @@ defmodule MiniInvestorApiWeb.CampaignView do
     %{
       id: campaign.id,
       name: campaign.name,
-      target_amount_pennies: campaign.target_amount_pennies,
-      multiplier_amount_pennies: campaign.multiplier_amount_pennies,
-      amount_pennies: campaign.amount_pennies,
-      image_url: campaign.image_url,
+      targetAmount: campaign.target_amount_pennies,
+      multiplierAmount: campaign.multiplier_amount_pennies,
+      raisedAmount: campaign.raised_amount_pennies,
+      raisedPercentage: raised_percentage(campaign.target_amount_pennies, campaign.raised_amount_pennies),
+      imageUrl: campaign.image_url,
       sector: campaign.sector,
-      country_name: campaign.country_name
+      countryName: campaign.country_name
     }
+  end
+
+  defp raised_percentage(target_amount, raised_amount) do
+    Float.round(raised_amount / target_amount * 100, 2)
   end
 end

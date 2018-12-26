@@ -6,7 +6,7 @@ defmodule MiniInvestorApi.Repo.Migrations.CreateCampaignsTable do
       add :name, :string, null: false
       add :target_amount_pennies, :integer, null: false
       add :multiplier_amount_pennies, :integer, null: false, default: 1
-      add :amount_pennies, :integer
+      add :raised_amount_pennies, :integer, null: false, default: 0
       add :image_url, :string
       add :sector, :string
       add :country_name, :string

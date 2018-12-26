@@ -1,8 +1,7 @@
 defmodule MiniInvestorApiWeb.CampaignControllerTest do
   use MiniInvestorApiWeb.ConnCase
 
-  alias MiniInvestorApi.Repo
-  alias MiniInvestorApi.Investments.Campaign
+  alias MiniInvestorApi.Investments
 
   @campaign_attrs %{"name" => "Company 1", "target_amount_pennies" => 100_000}
 
@@ -11,7 +10,7 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
       {:ok, campaign1: fixture_campaign(), campaign2: fixture_campaign(%{"name" => "Company 2"})}
     end
 
-    test "responds with all users", %{conn: conn, campaign1: campaign1, campaign2: campaign2} do
+    test "responds with all campaign", %{conn: conn, campaign1: campaign1, campaign2: campaign2} do
       response =
         conn
         |> get(Routes.campaign_path(conn, :index))
@@ -23,12 +22,15 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
 
       assert [%{"id" => ^campaign1_id}, %{"id" => ^campaign2_id}] = data["campaigns"]
       assert data["page"] == 1
-      assert data["page_size"] == 12
-      assert data["total_pages"] == 1
-      assert data["total_entries"] == 2
+      assert data["pageSize"] == 12
+      assert data["totalPages"] == 1
+      assert data["totalEntries"] == 2
     end
 
-    test "responds with one user when `page_size=1` and `page=2` added to the request", %{conn: conn, campaign2: campaign2} do
+    test "responds with one campaign when `page_size=1` and `page=2` added to the request", %{
+      conn: conn,
+      campaign2: campaign2
+    } do
       query = Routes.campaign_path(conn, :index) <> "?page=2&page_size=1"
 
       response =
@@ -41,15 +43,16 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
 
       assert [%{"id" => ^campaign2_id}] = data["campaigns"]
       assert data["page"] == 2
-      assert data["page_size"] == 1
-      assert data["total_pages"] == 2
-      assert data["total_entries"] == 2
+      assert data["pageSize"] == 1
+      assert data["totalPages"] == 2
+      assert data["totalEntries"] == 2
     end
   end
 
   defp fixture_campaign(attrs \\ %{}) do
-    %Campaign{}
-    |> Campaign.changeset(Map.merge(@campaign_attrs, attrs))
-    |> Repo.insert!()
+    @campaign_attrs
+    |> Map.merge(attrs)
+    |> Investments.create_campaign()
+    |> (&elem(&1, 1)).()
   end
 end

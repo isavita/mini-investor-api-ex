@@ -9,7 +9,7 @@ defmodule MiniInvestorApi.InvestmentsTest do
     "name" => "Company 1",
     "target_amount_pennies" => 100_000,
     "multiplier_amount_pennies" => 200,
-    "amount_pennies" => 1_000,
+    "raised_amount_pennies" => 1_000,
     "image_url" => "image.jpg",
     "sector" => "Sector 1",
     "country_name" => "Country 1"
@@ -21,7 +21,7 @@ defmodule MiniInvestorApi.InvestmentsTest do
       assert campaign.name == @campaign_valid_attrs["name"]
       assert campaign.target_amount_pennies == @campaign_valid_attrs["target_amount_pennies"]
       assert campaign.multiplier_amount_pennies == @campaign_valid_attrs["multiplier_amount_pennies"]
-      assert campaign.amount_pennies == @campaign_valid_attrs["amount_pennies"]
+      assert campaign.raised_amount_pennies == @campaign_valid_attrs["raised_amount_pennies"]
       assert campaign.image_url == @campaign_valid_attrs["image_url"]
       assert campaign.sector == @campaign_valid_attrs["sector"]
       assert campaign.country_name == @campaign_valid_attrs["country_name"]

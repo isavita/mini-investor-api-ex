@@ -40,5 +40,8 @@ defmodule MiniInvestorApiWeb.Endpoint do
     key: "_mini_investor_api_key",
     signing_salt: "zRMewigx"
 
+  # Allow CORS requests
+  plug CORSPlug, origin: ["http://localhost:8080", "http://127.0.0.1:8080"]
+
   plug MiniInvestorApiWeb.Router
 end

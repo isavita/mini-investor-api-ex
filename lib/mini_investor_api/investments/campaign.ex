@@ -7,7 +7,7 @@ defmodule MiniInvestorApi.Investments.Campaign do
     field :name, :string
     field :target_amount_pennies, :integer
     field :multiplier_amount_pennies, :integer
-    field :amount_pennies, :integer
+    field :raised_amount_pennies, :integer
     field :image_url, :string
     field :sector, :string
     field :country_name, :string
@@ -23,7 +23,7 @@ defmodule MiniInvestorApi.Investments.Campaign do
       :name,
       :target_amount_pennies,
       :multiplier_amount_pennies,
-      :amount_pennies,
+      :raised_amount_pennies,
       :image_url,
       :sector,
       :country_name
