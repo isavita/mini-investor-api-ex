@@ -3,7 +3,12 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
 
   alias MiniInvestorApi.Investments
 
-  @campaign_attrs %{"name" => "Company 1", "target_amount_pennies" => 100_000}
+  @campaign_attrs %{
+    "name" => "Company 1",
+    "target_amount_pennies" => 100_000,
+    "raised_amount_pennies" => 10_000,
+    "multiplier_amount_pennies" => 100
+  }
 
   describe "index/2" do
     setup do
@@ -46,6 +51,28 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
       assert data["pageSize"] == 1
       assert data["totalPages"] == 2
       assert data["totalEntries"] == 2
+    end
+  end
+
+  describe "show/2" do
+    setup do
+      {:ok, campaign: fixture_campaign()}
+    end
+
+    test "responds with the campaign", %{conn: conn, campaign: campaign} do
+      response =
+        conn
+        |> get(Routes.campaign_path(conn, :show, campaign.id))
+        |> json_response(200)
+
+      assert response["id"] == campaign.id
+      assert response["name"] == campaign.name
+      assert response["targetAmount"] == campaign.target_amount_pennies
+      assert response["raisedAmount"] == campaign.raised_amount_pennies
+      assert response["multiplierAmount"] == campaign.multiplier_amount_pennies
+      assert response["raisedPercentage"] == 10
+      assert response["sector"] == campaign.sector
+      assert response["countryName"] == campaign.country_name
     end
   end
 

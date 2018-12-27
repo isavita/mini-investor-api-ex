@@ -12,6 +12,11 @@ defmodule MiniInvestorApiWeb.CampaignController do
     render(conn, "index.json", paginated_campaigns: paginated_campaigns)
   end
 
+  def show(conn, %{"id" => id}) do
+    with campaign <- Investments.get_campaign!(id),
+         do: render(conn, "show.json", campaign: campaign)
+  end
+
   defp page(params), do: params["page"] || @default_page
   defp page_size(params), do: params["page_size"] || @default_page_size
 end

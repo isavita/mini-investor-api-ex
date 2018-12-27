@@ -13,6 +13,10 @@ defmodule MiniInvestorApiWeb.CampaignView do
     }
   end
 
+  def render("show.json", %{campaign: campaign}) do
+    render("campaign.json", %{campaign: campaign})
+  end
+
   def render("campaign.json", %{campaign: campaign}) do
     %{
       id: campaign.id,
