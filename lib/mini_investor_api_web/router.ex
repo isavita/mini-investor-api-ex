@@ -9,5 +9,6 @@ defmodule MiniInvestorApiWeb.Router do
     pipe_through :api
 
     resources "/campaigns", CampaignController, only: [:index]
+    resources "/investments", InvestmentController, only: [:create]
   end
 end

@@ -11,6 +11,19 @@ defmodule MiniInvestorApi.Investments do
   alias MiniInvestorApi.Investments.Investment
 
   @doc """
+  Gets campaign for given id.
+
+  ## Examples
+
+      iex> get_campaign!(1)
+      %Campaign{}
+
+  """
+  def get_campaign!(campaign_id) do
+    Repo.get!(Campaign, campaign_id)
+  end
+
+  @doc """
   Creates a campaign.
 
   ## Examples
@@ -54,6 +67,7 @@ defmodule MiniInvestorApi.Investments do
   """
   def create_investment_and_update_campaign(campaign, attrs) do
     Multi.new()
+    |> valid_investment_amount(campaign, attrs)
     |> Multi.insert(:investment, create_investment(campaign, attrs))
     |> Multi.update(:update_campaign, fn %{investment: investment} ->
       Campaign.changeset(campaign, %{
@@ -65,6 +79,17 @@ defmodule MiniInvestorApi.Investments do
       {:ok, %{investment: investment, update_campaign: _}} -> {:ok, investment}
       {:error, _operation, reason, _changes} -> {:error, reason}
     end
+  end
+
+  defp valid_investment_amount(multi, campaign, %{"amount_pennies" => amount_pennies}) do
+    multi
+    |> Multi.run(:valid_investment_amount, fn _repo, changes ->
+      cond do
+        amount_pennies <= 0 -> {:error, "amount needs to be positive"}
+        rem(amount_pennies, campaign.multiplier_amount_pennies) == 0 -> {:ok, changes}
+        true -> {:error, "amount needs to be multiple of #{campaign.multiplier_amount_pennies}"}
+      end
+    end)
   end
 
   defp create_investment(campaign, attrs) do

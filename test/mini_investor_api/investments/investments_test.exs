@@ -9,7 +9,7 @@ defmodule MiniInvestorApi.InvestmentsTest do
   @campaign_valid_attrs %{
     "name" => "Company 1",
     "target_amount_pennies" => 100_000,
-    "multiplier_amount_pennies" => 200,
+    "multiplier_amount_pennies" => 100,
     "raised_amount_pennies" => 1_000,
     "image_url" => "image.jpg",
     "sector" => "Sector 1",
@@ -41,6 +41,20 @@ defmodule MiniInvestorApi.InvestmentsTest do
 
     test "returns all campaigns", %{campaign: campaign} do
       assert Investments.list_campaigns() == [campaign]
+    end
+  end
+
+  describe "get_campaign/1" do
+    setup do
+      {:ok, campaign: fixture_campaign()}
+    end
+
+    test "returns the campaign", %{campaign: campaign} do
+      assert Investments.get_campaign!(campaign.id) == campaign
+    end
+
+    test "raises an error if the campaign does not exist" do
+      assert_raise Ecto.NoResultsError, fn -> Investments.get_campaign!(-1) end
     end
   end
 
@@ -81,8 +95,9 @@ defmodule MiniInvestorApi.InvestmentsTest do
                campaign.raised_amount_pennies + investment.amount_pennies
     end
 
-    test "with invalid data returns error changeset", %{campaign: campaign} do
-      assert {:error, %Ecto.Changeset{}} = Investments.create_investment_and_update_campaign(campaign, %{})
+    test "with amount not divisible by campaign's multiplier returns error", %{campaign: campaign} do
+      assert {:error, "amount needs to be multiple of 100"} =
+               Investments.create_investment_and_update_campaign(campaign, %{"amount_pennies" => 120})
     end
   end
 
