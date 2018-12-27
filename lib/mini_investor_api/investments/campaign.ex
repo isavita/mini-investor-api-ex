@@ -1,6 +1,9 @@
 defmodule MiniInvestorApi.Investments.Campaign do
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias MiniInvestorApi.Investments.Investment
   alias __MODULE__
 
   schema "campaigns" do
@@ -12,6 +15,7 @@ defmodule MiniInvestorApi.Investments.Campaign do
     field :sector, :string
     field :country_name, :string
     field :lock_version, :integer, default: 1
+    has_many :investments, Investment
 
     timestamps()
   end

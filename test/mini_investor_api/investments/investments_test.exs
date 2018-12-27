@@ -4,6 +4,7 @@ defmodule MiniInvestorApi.InvestmentsTest do
   alias MiniInvestorApi.Repo
   alias MiniInvestorApi.Investments
   alias MiniInvestorApi.Investments.Campaign
+  alias MiniInvestorApi.Investments.Investment
 
   @campaign_valid_attrs %{
     "name" => "Company 1",
@@ -14,6 +15,7 @@ defmodule MiniInvestorApi.InvestmentsTest do
     "sector" => "Sector 1",
     "country_name" => "Country 1"
   }
+  @investment_valid_attrs %{"amount_pennies" => 100}
 
   describe "create_campaign/1" do
     test "with valid data creates a campaign" do
@@ -63,9 +65,32 @@ defmodule MiniInvestorApi.InvestmentsTest do
     end
   end
 
+  describe "create_investment_and_update_campaign/1" do
+    setup do
+      {:ok, campaign: fixture_campaign()}
+    end
+
+    test "with valid data creates an investment and updates campaign's raised amount", %{campaign: campaign} do
+      assert {:ok, %Investment{} = investment} =
+               Investments.create_investment_and_update_campaign(campaign, @investment_valid_attrs)
+
+      assert investment.campaign_id == campaign.id
+      assert investment.amount_pennies == @investment_valid_attrs["amount_pennies"]
+
+      assert get_campaign(campaign.id).raised_amount_pennies ==
+               campaign.raised_amount_pennies + investment.amount_pennies
+    end
+
+    test "with invalid data returns error changeset", %{campaign: campaign} do
+      assert {:error, %Ecto.Changeset{}} = Investments.create_investment_and_update_campaign(campaign, %{})
+    end
+  end
+
   defp fixture_campaign(attrs \\ %{}) do
     %Campaign{}
     |> Campaign.changeset(Map.merge(@campaign_valid_attrs, attrs))
     |> Repo.insert!()
   end
+
+  defp get_campaign(id), do: Repo.get!(Campaign, id)
 end
