@@ -59,7 +59,7 @@ defmodule MiniInvestorApi.Investments do
   total number of campaings, and total number of pages.
   """
   def paginate_campaigns(page, page_size) do
-    Repo.paginate(Campaign, page: page, page_size: page_size)
+    Repo.paginate(from(c in Campaign, order_by: c.id), page: page, page_size: page_size)
   end
 
   @doc """
