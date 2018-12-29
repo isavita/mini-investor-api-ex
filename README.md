@@ -1,19 +1,31 @@
-# MiniInvestorApi
+# Mini Investor Api
 
-To start your Phoenix server:
+## Setup the project
+### Install postgresql
+
+  * [on mac](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
+  * [on ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+  * [on windows](http://www.postgresqltutorial.com/install-postgresql)
+
+### To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
   * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+### To start web app
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+  * Clone the [web app repository](https://github.com/isavita/mini-investor-ui)
+  * Follow the README of the repository to setup the project
 
-## Learn more
+## Docker setup
+  * For initial setup (creates the database and runs the seed) run
+  ```shell
+  make setup
+  ```
+  * For rebuild run
+  ```shell
+  make dev
+  `````
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+  Now you can visit [`localhost:8080`](http://localhost:8080) from your browser.

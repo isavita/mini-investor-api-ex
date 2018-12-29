@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :mini_investor_api, MiniInvestorApiWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: (System.get_env("PORT") || 4000)],
   debug_errors: false,
   code_reloader: true,
   check_origin: false,
@@ -49,8 +49,5 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :mini_investor_api, MiniInvestorApi.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "mini_investor_api_dev",
-  hostname: "localhost",
+  url: (System.get_env("DATABASE_URL") || "ecto://postgres:postgres@localhost/mini_investor_api_dev"),
   pool_size: 10
