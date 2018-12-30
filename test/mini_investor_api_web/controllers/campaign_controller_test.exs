@@ -22,14 +22,15 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
         |> json_response(200)
 
       data = response["data"]
+      meta = response["meta"]
       campaign1_id = campaign1.id
       campaign2_id = campaign2.id
 
       assert [%{"id" => ^campaign1_id}, %{"id" => ^campaign2_id}] = data["campaigns"]
-      assert data["page"] == 1
-      assert data["pageSize"] == 12
-      assert data["totalPages"] == 1
-      assert data["totalEntries"] == 2
+      assert meta["page"] == 1
+      assert meta["pageSize"] == 12
+      assert meta["totalPages"] == 1
+      assert meta["totalEntries"] == 2
     end
 
     test "responds with one campaign when `page_size=1` and `page=2` added to the request", %{
@@ -44,13 +45,14 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
         |> json_response(200)
 
       data = response["data"]
+      meta = response["meta"]
       campaign2_id = campaign2.id
 
       assert [%{"id" => ^campaign2_id}] = data["campaigns"]
-      assert data["page"] == 2
-      assert data["pageSize"] == 1
-      assert data["totalPages"] == 2
-      assert data["totalEntries"] == 2
+      assert meta["page"] == 2
+      assert meta["pageSize"] == 1
+      assert meta["totalPages"] == 2
+      assert meta["totalEntries"] == 2
     end
   end
 

@@ -5,6 +5,8 @@ defmodule MiniInvestorApiWeb.CampaignView do
     %{
       data: %{
         campaigns: render_many(paginated_campaigns.entries, MiniInvestorApiWeb.CampaignView, "campaign.json"),
+      },
+      meta: %{
         page: paginated_campaigns.page_number,
         pageSize: paginated_campaigns.page_size,
         totalPages: paginated_campaigns.total_pages,
