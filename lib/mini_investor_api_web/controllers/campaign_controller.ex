@@ -18,5 +18,5 @@ defmodule MiniInvestorApiWeb.CampaignController do
   end
 
   defp page(params), do: params["page"] || @default_page
-  defp page_size(params), do: params["page_size"] || @default_page_size
+  defp page_size(params), do: params["pageSize"] || @default_page_size
 end

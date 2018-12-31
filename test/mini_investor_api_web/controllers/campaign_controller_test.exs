@@ -37,7 +37,7 @@ defmodule MiniInvestorApiWeb.CampaignControllerTest do
       conn: conn,
       campaign2: campaign2
     } do
-      query = Routes.campaign_path(conn, :index) <> "?page=2&page_size=1"
+      query = Routes.campaign_path(conn, :index) <> "?page=2&pageSize=1"
 
       response =
         conn
