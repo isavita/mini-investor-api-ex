@@ -2,7 +2,7 @@
 
 dev:
 	@docker-compose down && \
-		docker-compose build --pull --no-cache && \
+		docker-compose build --no-cache --pull && \
 		docker-compose run api mix deps.get && \
 		docker-compose run api mix ecto.create && \
 		docker-compose run api mix ecto.migrate && \
@@ -10,7 +10,7 @@ dev:
 		echo "You can visit localhost:8080 from your browser"
 
 setup:
-	@docker-compose build --pull --no-cache && \
+	@docker-compose build --no-cache --pull && \
 		docker-compose run api mix deps.get && \
 		docker-compose run api mix ecto.setup && \
 		docker-compose up -d && \

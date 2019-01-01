@@ -1,31 +1,30 @@
-version: "3"
+version: '3'
 
 services:
-  web:
-    image: baruh/mini-investor-ui
-    ports:
-      - "8080:80"
-    depends_on:
-      - api
   api:
     build: .
     command: mix phx.server
-    environment:
-      - MIX_ENV=dev
-      - PORT=4000
-      - DATABASE_URL=ecto://postgres:postgres@postgres/mini_investor_api_dev
-    volumes:
-      - .:/app
-    ports:
-      - "4000:4000"
     depends_on:
-      - postgres
-  postgres:
+    - db
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/mini_investor_api_dev
+      MIX_ENV: dev
+      PORT: '4000'
+    ports:
+    - '4000:4000'
+    volumes:
+    - .:/app
+  db:
     image: postgres:11.1-alpine
     volumes:
-      - pgdata:/var/lib/postgresql/data
+    - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-
+    - '5433:5432'
+  web:
+    image: baruh/mini-investor-ui:v0.1
+    ports:
+    - '8080:80'
+    depends_on:
+    - api
 volumes:
   pgdata:
